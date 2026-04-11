@@ -6,8 +6,9 @@ import Image from "next/image";
 import { ArrowLeft, BrainCircuit, BookOpen } from "lucide-react";
 
 // استيراد البيانات
-import { texts as texts4ap } from "@/data/texts/4ap";
-import { texts as texts5ap } from "@/data/texts/5ap";
+// الكود الصحيح
+import { texts4ap } from "@/data/texts/4ap";
+import { texts5ap } from "@/data/texts/5ap";
 
 import { useReadingSession } from "@/hooks/useReadingSession";
 import Recorder from "@/components/Reading/Recorder";
