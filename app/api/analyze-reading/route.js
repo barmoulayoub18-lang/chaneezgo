@@ -20,14 +20,24 @@ export async function POST(req) {
       );
     }
 
-    // تنظيف النصوص من الفراغات الزائدة لضمان دقة المقارنة
-    const cleanedOriginal = originalText.trim();
-    const cleanedTranscript = userTranscript.trim();
+    // =========================================
+    // 🧹 TEXT SANITIZATION (تنظيف وتفكيك النصوص الملتصقة)
+    // =========================================
+    // إضافة مسافات بعد علامات الترقيم لمنع التصاق الكلمات (حل مشكلة Amani,j'habite)
+    const prepareText = (txt) => {
+      return txt
+        .replace(/([,.!?;:])([^\s])/g, '$1 $2') // إضافة مسافة إذا نسق الـ STT الكلمات ملتصقة بالعلامات
+        .replace(/\s+/g, ' ')                  // توحيد المسافات
+        .trim();
+    };
+
+    const cleanedOriginal = prepareText(originalText);
+    const cleanedTranscript = prepareText(userTranscript);
 
     // =========================================
-    // 🧠 SCORING (المعالجة المركزية)
+    // 🧠 SCORING (المعالجة المركزية بصرامة)
     // =========================================
-    // نقوم باستدعاء الدالة البرمجية المسؤولة عن خوارزمية المقارنة
+    // استدعاء الدالة المسؤولة مع التأكد من جودة النص المدخل
     const results = processScoring(
       cleanedOriginal,
       cleanedTranscript,
@@ -39,7 +49,6 @@ export async function POST(req) {
     // =========================================
     let aiFeedback = results.feedback;
 
-    // محاولة الاتصال بـ Groq AI إذا كان المفتاح متوفراً لتخصيص الرد
     if (process.env.GROQ_API_KEY) {
       try {
         const res = await fetch(
@@ -56,19 +65,18 @@ export async function POST(req) {
                 {
                   role: "system",
                   content: `
-                    أنت مدرب قراءة للأطفال باللغة الفرنسية والعربية.
-                    قدم ملاحظة تربوية مشجعة وقصيرة جداً (أقل من 10 كلمات).
-                    ركز على تحسين النطق وسرعة القراءة.
-                    اللغة المستخدمة في الرد: العربية.
+                    أنت مدرب قراءة محترف للأطفال.
+                    قدم ملاحظة تربوية مشجعة وقصيرة جداً بناءً على النتائج.
+                    إذا كانت الدقة منخفضة، شجع على إعادة المحاولة ببطء.
+                    اللغة: العربية.
                   `
                 },
                 {
                   role: "user",
                   content: `
-                    نص القراءة الأصلي: ${cleanedOriginal}
-                    ما قرأه الطالب: ${cleanedTranscript}
-                    نسبة الدقة: ${results.accuracy}%
-                    الكلمات في الدقيقة: ${results.wpm}
+                    الدقة: ${results.accuracy}%
+                    الكلمات الصحيحة: ${results.correctWordsCount} من أصل ${results.totalWords}
+                    السرعة: ${results.wpm} WPM
                   `
                 }
               ],
@@ -86,23 +94,22 @@ export async function POST(req) {
           }
         }
       } catch (err) {
-        console.error("AI Feedback Error (Non-Critical):", err);
+        console.error("AI Feedback Error:", err);
       }
     }
 
     // =========================================
-    // 🎯 RESPONSE (تنسيق النتائج النهائية بدقة)
+    // 🎯 RESPONSE (تنسيق النتائج النهائية بدقة واقعية)
     // =========================================
-    // نرسل البيانات مع التأكد من أن الكلمات الصحيحة والأخطاء منطقية
     return NextResponse.json({
       wpm: results.wpm,
       accuracy: results.accuracy,
       errorsCount: results.errorsCount,
-      wordsRead: results.wordsRead, // عدد الكلمات التي نطقها الطالب فعلياً
-      correctWordsCount: results.correctWordsCount || results.wordsRead - results.errorsCount,
-      wordsAnalysis: results.wordsAnalysis, // المصفوفة التي تلون الكلمات (أحمر/أخضر)
+      wordsRead: results.wordsRead, 
+      correctWordsCount: results.correctWordsCount,
+      wordsAnalysis: results.wordsAnalysis, // سيحتوي الآن على تحليل دقيق للكلمات المنفصلة
       feedback: aiFeedback,
-      stars: results.stars,
+      stars: results.stars, // تم ربطها بالدقة (0-100% تعطي 1-5 نجوم)
       rating: results.rating,
       totalWords: results.totalWords,
       status: "success"
@@ -110,7 +117,6 @@ export async function POST(req) {
 
   } catch (error) {
     console.error("CRITICAL API ERROR:", error);
-
     return NextResponse.json(
       {
         error: "فشل نظام التحليل الذكي",
