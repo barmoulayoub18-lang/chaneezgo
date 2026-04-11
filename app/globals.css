@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+:root {
+  --background: #020617; /* أسود كحلي عميق */
+  --foreground: #f8fafc;
+  --indigo-primary: #6366f1;
+}
+
+/* ============================================================
+   تعديل صارم: إخفاء شعار Turbopack (Next.js Dev Tool) نهائياً
+   ============================================================ */
+[data-nextjs-toast-wrapper],
+[data-nextjs-vitals],
+nextjs-portal,
+#nextjs-dev-overlay,
+svg[viewBox="0 0 40 40"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* تحسين استقرار الصفحة ومنع الانزياح الناتج عن الترجمة */
+html {
+  top: 0 !important;
+  position: static !important;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  top: 0 !important;
+  position: static !important;
+  overflow-x: hidden;
+  /* إضافة خط Tajawal لضمان توافق الخطوط في كل مكان */
+  font-family: var(--font-tajawal), sans-serif;
+}
+
+/* تخصيص شريط التمرير الرئيسي */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* تأثير التدرج الشعاعي للخلفية */
+.bg-gradient-main {
+  background: radial-gradient(circle at top right, #1e1b4b 0%, #020617 50%);
+}
+
+/* تخصيص شريط التمرير للقائمة الجانبية أو الأقسام */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.2);
+  border-radius: 20px;
+}
+
+/* ميزة إضافية: إخفاء شريط التمرير مع بقاء خاصية التمرير (للناف بار) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================================
+    إعدادات الحماية الصارمة ضد أدوات ترجمة جوجل (Google Translate)
+    ============================================================ */
+
+/* 1. إخفاء كافة عناصر واجهة جوجل المزعجة */
+.goog-te-banner-frame, 
+.goog-te-balloon-frame,
+#goog-gt-tt,
+.goog-te-banner,
+.goog-te-menu-value,
+.goog-te-menu-frame,
+.goog-te-gadget-simple,
+.VIpgJd-y662s-L66Q6c,
+.VIpgJd-Zvi9m-OR933-shell,
+#goog-gt-m,
+.goog-te-spinner-pos,
+.skiptranslate,
+iframe.goog-te-menu-frame {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 2. حماية القائمة المنسدلة (Combo) */
+.goog-te-combo {
+  display: block !important; 
+  visibility: hidden !important;
+  position: absolute !important;
+  top: -1000px !important;
+}
+
+/* 3. حماية الخطوط والألوان */
+font {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  display: inline !important;
+  font-family: inherit !important;
+  vertical-align: inherit !important;
+  color: inherit !important;
+}
+
+/* 4. منع تمييز النصوص المترجمة */
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+}
+
+/* تحسين أداء الـ Selection */
+::selection {
+  background-color: rgba(99, 102, 241, 0.3);
+  color: #e2e8f0;
+}
+
+/* أنيميشن مخصصة للوحات التحكم (Dashboard Animations) */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-dashboard-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+
+

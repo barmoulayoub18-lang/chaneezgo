@@ -1,0 +1,6 @@
+{
+  "name": "EduStream Platform",
+  "short_name": "EduStream",
+  "start_url": "/",
+  "display": "standalone"
+}
