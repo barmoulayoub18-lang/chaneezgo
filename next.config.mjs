@@ -2,7 +2,6 @@
 const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-  //output: 'export',
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },
