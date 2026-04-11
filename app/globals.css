@@ -1,4 +1,7 @@
-@import "tailwindcss";
+/* استبدال سطر الاستيراد الخاطئ بالاستيراد القياسي لنسخة Tailwind 3 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #020617; /* أسود كحلي عميق */
@@ -146,6 +149,3 @@ font {
 .animate-dashboard-in {
   animation: fadeIn 0.5s ease-out forwards;
 }
-
-
-
