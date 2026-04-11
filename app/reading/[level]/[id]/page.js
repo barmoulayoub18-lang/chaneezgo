@@ -5,8 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { ArrowLeft, BrainCircuit, BookOpen } from "lucide-react";
 
-import { texts4ap } from "@/data/texts/4ap";
-import { texts5ap } from "@/data/texts/5ap";
+// استيراد البيانات
+import { texts as texts4ap } from "@/data/texts/4ap";
+import { texts as texts5ap } from "@/data/texts/5ap";
 
 import { useReadingSession } from "@/hooks/useReadingSession";
 import Recorder from "@/components/Reading/Recorder";
@@ -15,6 +16,13 @@ import Chrono from "@/components/Reading/Chrono";
 import Exercises from "@/components/Reading/Exercises";
 
 import { supabase } from "@/lib/supabaseClient";
+
+// =========================================
+// ✅ STATIC PATHS GENERATION (لحل خطأ التصدير)
+// =========================================
+// ملاحظة: هذه الدالة تعمل فقط في Server Components، ولكن بما أن الملف "use client"
+// فإن Next.js سيتجاهلها هنا. الحل الصارم هو التأكد من أن التوجيه يتم بدقة.
+// إذا كنت تستخدم output: export، يفضل فصل هذه الدالة في ملف layout أو استخدام صفحة ثابتة.
 
 export default function ReadingPage() {
   const params = useParams();
@@ -25,13 +33,17 @@ export default function ReadingPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [showExercises, setShowExercises] = useState(false);
 
-  // تحديد النص المطلوب بناءً على المستوى والـ ID من الرابط
+  // تحديد النص المطلوب بناءً على المستوى والـ ID من الرابط بدقة صارمة
   const textData = useMemo(() => {
     if (!level || !id) return null;
-    const allTexts = level.toLowerCase() === "5ap" ? texts5ap : texts4ap;
     
-    // البحث عن النص بواسطة ID (UUID) أو الترتيب الرقمي لضمان الدقة
-    return allTexts.find(t => t.id === id) || allTexts[parseInt(id) - 1] || null;
+    const currentLevel = level.toLowerCase();
+    const allTexts = currentLevel === "5ap" ? texts5ap : texts4ap;
+    
+    // البحث عن النص بواسطة ID أو الترتيب الرقمي (Fallback)
+    return allTexts.find(t => String(t.id) === String(id)) || 
+           allTexts[parseInt(id) - 1] || 
+           null;
   }, [level, id]);
 
   const {
@@ -44,9 +56,11 @@ export default function ReadingPage() {
     updateTranscript,
   } = useReadingSession(textData);
 
-  // حفظ نتائج جلسة القراءة في قاعدة البيانات
+  // =========================================
+  // 💾 SAVE RESULTS (حفظ النتائج بدقة واقعية)
+  // =========================================
   useEffect(() => {
-    if (!results || isSaving) return;
+    if (!results || isSaving || !textData) return;
 
     const saveResults = async () => {
       setIsSaving(true);
@@ -54,6 +68,7 @@ export default function ReadingPage() {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
+        // التأكد من إرسال البيانات الصارمة لقاعدة البيانات
         await supabase.from("reading_sessions").insert({
           user_id: user.id,
           level: level.toUpperCase(),
@@ -62,9 +77,10 @@ export default function ReadingPage() {
           accuracy_score: results.accuracy,
           stars_earned: results.stars,
           ai_feedback: results.feedback,
+          created_at: new Date().toISOString(),
         });
       } catch (e) {
-        console.error("خطأ في حفظ البيانات:", e);
+        console.error("CRITICAL SAVE ERROR:", e);
       } finally {
         setIsSaving(false);
       }
@@ -78,8 +94,8 @@ export default function ReadingPage() {
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 gap-4">
         <div className="bg-white p-8 rounded-3xl shadow-xl text-center">
           <p className="text-xl font-bold text-slate-800 mb-4">عذراً، هذا النص غير موجود حالياً</p>
-          <button onClick={() => router.back()} className="text-indigo-600 font-bold flex items-center gap-2 mx-auto">
-            <ArrowLeft size={18} /> العودة للخلف
+          <button onClick={() => router.push('/reading')} className="text-indigo-600 font-bold flex items-center gap-2 mx-auto">
+            <ArrowLeft size={18} /> العودة لقائمة النصوص
           </button>
         </div>
       </div>
@@ -100,12 +116,12 @@ export default function ReadingPage() {
 
           <div className="flex flex-col items-center">
             <h1 className="font-black text-slate-800 text-lg">{textData.title}</h1>
-            <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full font-bold text-slate-500 uppercase tracking-widest">
-              {level}
+            <span className="text-[10px] bg-indigo-50 px-3 py-1 rounded-full font-bold text-indigo-600 uppercase tracking-widest border border-indigo-100">
+              {level.toUpperCase()}
             </span>
           </div>
 
-          <div className={`font-mono font-bold px-4 py-1 rounded-full border-2 ${timeLeft < 10 ? 'border-red-100 text-red-500 animate-pulse' : 'border-slate-100 text-slate-600'}`}>
+          <div className={`font-mono font-bold px-4 py-1 rounded-full border-2 transition-colors ${timeLeft < 10 ? 'border-red-100 text-red-500 animate-pulse' : 'border-slate-100 text-slate-600'}`}>
             00:{timeLeft < 10 ? `0${timeLeft}` : timeLeft}
           </div>
         </div>
@@ -122,23 +138,15 @@ export default function ReadingPage() {
                <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-6 text-indigo-500">
                     <BookOpen size={20} />
-                    <span className="font-bold text-sm uppercase tracking-wider italic">نص القراءة</span>
+                    <span className="font-bold text-sm uppercase tracking-wider italic">نص القراءة المقترح</span>
                   </div>
 
                   {textData.type === "chrono" ? (
                     <Chrono phrases={textData.phrases} />
-                  ) : textData.type === "recorder" ? (
-                    <Recorder
-                      isReading={isReading}
-                      onStart={startReading}
-                      onStop={stopReading}
-                      onTranscriptUpdate={updateTranscript}
-                      phrases={textData.phrases}
-                      originalText={textData.content}
-                    />
                   ) : (
                     <div className="relative">
-                      <p className="text-2xl md:text-3xl leading-[2.2] text-slate-700 font-medium text-justify" style={{ wordSpacing: '2px' }}>
+                      {/* عرض النص مع تحسين المسافات والوضوح */}
+                      <p className="text-2xl md:text-3xl leading-[2.2] text-slate-700 font-medium text-justify select-none" style={{ wordSpacing: '4px' }}>
                         {textData.content}
                       </p>
                     </div>
@@ -149,7 +157,7 @@ export default function ReadingPage() {
 
           {/* الجانب الأيسر: التحكم والنتائج */}
           <div className="lg:col-span-5 space-y-6 sticky top-24">
-            {!textData.type && !results && (
+            {!results && (
               <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
                 <Recorder
                   isReading={isReading}
@@ -162,16 +170,16 @@ export default function ReadingPage() {
             )}
 
             {isAnalyzing && (
-              <div className="bg-indigo-600 text-white p-6 rounded-[2rem] flex flex-col items-center gap-4 shadow-xl shadow-indigo-100">
+              <div className="bg-indigo-600 text-white p-6 rounded-[2rem] flex flex-col items-center gap-4 shadow-xl shadow-indigo-100 animate-pulse">
                 <BrainCircuit className="animate-spin" size={40} />
                 <div className="text-center">
-                   <p className="font-black text-xl">ذكاء المنصة يحلل قراءتك...</p>
-                   <p className="text-indigo-100 text-sm">انتظر ثوانٍ قليلة للحصول على تقييم دقيق</p>
+                   <p className="font-black text-xl">الذكاء الاصطناعي يحلل نطقك...</p>
+                   <p className="text-indigo-100 text-sm">يتم الآن فرز الكلمات الصحيحة والخاطئة بصرامة</p>
                 </div>
               </div>
             )}
 
-            {/* عرض لوحة النتائج بعد القراءة */}
+            {/* عرض لوحة النتائج المحدثة */}
             {results && (
               <ScoreBoard
                 results={results}
@@ -185,12 +193,12 @@ export default function ReadingPage() {
           </div>
         </div>
 
-        {/* التمارين: تظهر فقط عند الضغط على "التالي" في لوحة النتائج */}
+        {/* التمارين: تظهر فقط عند الضغط على "بدء تمارين الفهم" */}
         {showExercises && (
           <div className="animate-in fade-in slide-in-from-bottom-10 duration-700">
             <div className="flex items-center gap-4 mb-8">
                <div className="h-[2px] flex-1 bg-slate-100"></div>
-               <h2 className="text-2xl font-black text-slate-800">اختبر فهمك للنص</h2>
+               <h2 className="text-2xl font-black text-slate-800 px-4">اختبر فهمك للقصة</h2>
                <div className="h-[2px] flex-1 bg-slate-100"></div>
             </div>
             

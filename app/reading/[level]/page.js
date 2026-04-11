@@ -10,7 +10,9 @@ import Progress from "@/components/Reading/Progress";
 import { BookOpen, ArrowLeft, LayoutGrid, Sparkles, Trophy, Loader2, Shuffle } from "lucide-react";
 
 export default function LevelPage() {
-  const { level } = useParams();
+  const params = useParams();
+  // تأمين استخراج المستوى ليكون متوافقاً مع CSR و SSR
+  const level = params?.level; 
   const router = useRouter();
   
   const [loading, setLoading] = useState(true);
@@ -30,7 +32,7 @@ export default function LevelPage() {
   const themeColor = isLevel4 ? "from-blue-600 to-indigo-700" : "from-orange-500 to-red-600";
   const accentColor = isLevel4 ? "bg-blue-600" : "bg-orange-500";
 
-  // 2. وظيفة الخلط العشوائي (Fisher-Yates Shuffle) لضمان تغير الصور والتمارين
+  // 2. وظيفة الخلط العشوائي (Fisher-Yates Shuffle)
   const shuffleArray = (array) => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -42,10 +44,12 @@ export default function LevelPage() {
 
   useEffect(() => {
     const initializePage = async () => {
+      if (!level) return; // منع التنفيذ إذا لم يتم التعرف على المستوى بعد
+      
       try {
         setLoading(true);
         
-        // خلط النصوص عشوائياً في كل مرة يتم فيها تحميل الصفحة
+        // خلط النصوص عشوائياً
         setShuffledTexts(shuffleArray(sourceTexts));
 
         // جلب إحصائيات المستخدم
@@ -94,7 +98,7 @@ export default function LevelPage() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-24 font-sans" dir="rtl">
       
-      {/* 🚀 Hero Section */}
+      {/* 🚀 Hero Section - الحفاظ على التصميم الأصلي بدقة */}
       <div className={`w-full pt-10 pb-20 mb-[-40px] text-white bg-gradient-to-br ${themeColor} shadow-2xl relative overflow-hidden`}>
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
             <div className="absolute top-[-10%] left-[-5%] w-64 h-64 bg-white rounded-full blur-3xl"></div>
@@ -142,7 +146,6 @@ export default function LevelPage() {
       <div className="container mx-auto px-4 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
-          {/* 📊 الجانب الأيمن: إحصائيات التلميذ */}
           <div className="lg:col-span-4 space-y-8 order-last lg:order-first">
             <div className="sticky top-10">
               <h3 className="text-slate-400 font-black text-[10px] uppercase tracking-[0.2em] mb-4 px-2 text-right">لوحة الإنجازات</h3>
@@ -160,7 +163,6 @@ export default function LevelPage() {
             </div>
           </div>
 
-          {/* 📚 الجانب الأيسر: قائمة النصوص المختلطة */}
           <div className="lg:col-span-8 text-right">
             <div className="flex flex-col md:flex-row-reverse md:items-center justify-between mb-10 gap-4">
               <div>
@@ -179,7 +181,7 @@ export default function LevelPage() {
               {shuffledTexts.map((text) => (
                 <div key={text.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                   <TextCard
-                    text={{...text, level: level.toUpperCase()}}
+                    text={{...text, level: level?.toUpperCase() || ""}}
                   />
                 </div>
               ))}
