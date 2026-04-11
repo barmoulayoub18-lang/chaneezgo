@@ -71,7 +71,7 @@ const nextConfig = {
       },
     ];
   },
-  swcMinify: true,
+  // تم إزالة swcMinify لأنه مفعل تلقائياً في الإصدار 15 وإضافته تسبب خطأ البناء في Vercel
   reactStrictMode: false,
 };
 

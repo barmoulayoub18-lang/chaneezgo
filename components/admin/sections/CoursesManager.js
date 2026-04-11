@@ -195,7 +195,6 @@ export default function CoursesManager({
                   </div>
                   <div className="text-right overflow-hidden">
                     <div className="flex items-center gap-2 mb-1">
-                      {/* عرض المستوى بوضوح تام بصرامة */}
                       <span className={`text-[8px] px-2 py-0.5 rounded-full border font-black uppercase ${
                         course.level === '5ap' 
                         ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
