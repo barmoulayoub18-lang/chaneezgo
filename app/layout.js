@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ar" dir="rtl" className={`scroll-smooth ${tajawal.variable}`} suppressHydrationWarning>
       <head>
-        <title>EDUSTREAM | منصتك للتميز الدراسي</title>
+        <title>DIDACTILECT | منصتك للتميز الدراسي</title>
         <meta name="description" content="أقوى منصة تعليمية جزائرية لمتابعة الدروس والدورات التدريبية باحترافية" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
         

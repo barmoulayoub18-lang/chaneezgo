@@ -95,10 +95,14 @@ export default function LoginPage() {
       
       <div className="max-w-md w-full z-10 animate-in fade-in duration-700">
         <Link href="/" className="flex items-center justify-center gap-3 mb-10 group">
-          <div className="w-14 h-14 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-500">
-            <Zap size={28} fill="white" className="text-white" />
-          </div>
-          <span className="text-3xl font-black text-white tracking-tighter italic">EDUSTREAM</span>
+          <div className="p-2 rounded-2xl bg-gradient-to-br from-indigo-600/30 to-purple-600/20 backdrop-blur-md border border-white/10 shadow-lg">
+  <img 
+    src="/images/logo.png" 
+    alt="Logo" 
+    className="h-12 w-auto object-contain scale-110 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+  />
+</div>
+<span className="text-3xl font-black text-white tracking-tighter italic">DIDACTILECT</span>
         </Link>
 
         <div className="bg-[#0f172a]/60 backdrop-blur-3xl border border-white/10 p-10 rounded-[3rem] shadow-2xl">
@@ -170,3 +174,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

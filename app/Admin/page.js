@@ -85,7 +85,7 @@ export default function AdminDashboard() {
               <ShieldCheck className="text-white" size={28} />
             </div>
             <div>
-              <h1 className="text-2xl font-black italic tracking-tighter uppercase leading-none">EduStream Panel</h1>
+              <h1 className="text-2xl font-black italic tracking-tighter uppercase leading-none">DIDACTILECT Panel</h1>
               <p className="text-indigo-400 text-[9px] font-black uppercase tracking-[0.3em] mt-1">Management Suite v4.0</p>
             </div>
           </div>
@@ -278,7 +278,7 @@ export default function AdminDashboard() {
                 <FooterStat value={tickets?.length} label="طلبات الدعم" color="text-amber-500" />
             </div>
             <p className="text-[10px] font-black text-slate-700 uppercase tracking-[0.8em] italic">
-              EduStream • Administrative Control Layer • 2026
+              DIDACTILECT • Administrative Control Layer • 2026
             </p>
          </footer>
       </div>
@@ -307,3 +307,6 @@ function FooterStat({ value, label, color }) {
     </div>
   );
 }
+
+
+

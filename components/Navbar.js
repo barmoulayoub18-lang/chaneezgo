@@ -51,12 +51,7 @@ export default function Navbar() {
     { name: 'الرئيسية', icon: Home, path: '/' },
     { name: 'تصفح الدورات', icon: LayoutGrid, path: '/courses' }, 
     { name: 'لوحة التحكم', icon: LayoutDashboard, path: '/dashboard' },
-    { 
-      name: 'نظام الطلاقة اللغوية', 
-      icon: Mic2, 
-      path: '/reading/5ap', 
-      isNew: true // وسم لتمييز الميزة الجديدة بصرياً
-    },
+    
     { name: 'دوراتي التعليمية', icon: BookOpen, path: '/my-courses' },
     { name: 'الدعم الفني', icon: MessageSquare, path: '/support' },
     { name: 'الملف الشخصي', icon: User, path: '/profile' },
@@ -137,11 +132,11 @@ export default function Navbar() {
 
           <div className="mb-12">
             <div className="flex items-center gap-4 mb-2">
-              <div className="p-3 bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-600/20 notranslate" translate="no">
-                <GraduationCap className="text-white" size={28} />
-              </div>
+              <div className="p-2 bg-white rounded-2xl shadow-lg notranslate" translate="no">
+  <img src="/images/logo.png" alt="Logo" className="h-12 w-auto object-contain scale-110" />
+</div>
               <div>
-                <h2 className="text-xl font-black italic text-white tracking-tighter uppercase notranslate" translate="no">EduStream</h2>
+                <h2 className="text-xl font-black italic text-white tracking-tighter uppercase notranslate" translate="no">DIDACTILECT</h2>
                 <p className="text-[9px] font-black text-indigo-400 uppercase tracking-[0.3em] notranslate" translate="no">Learning Ecosystem</p>
               </div>
             </div>
@@ -227,7 +222,7 @@ export default function Navbar() {
             </button>
             <div className="mt-8 flex flex-col items-center gap-2">
                <p className="text-center text-[8px] text-slate-600 font-bold uppercase tracking-[0.4em] notranslate" translate="no">
-                EduStream v3.6.0 • 2026
+                 DIDACTILECT v3.6.0 • 2026
               </p>
               <div className="flex gap-1">
                 <Sparkles size={8} className="text-indigo-500/40" />
@@ -247,3 +242,6 @@ export default function Navbar() {
     </>
   );
 }
+
+
+

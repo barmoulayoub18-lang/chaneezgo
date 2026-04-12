@@ -68,7 +68,7 @@ export default function Home() {
             <Zap className="absolute inset-0 m-auto text-indigo-500 animate-pulse" size={24} />
           </div>
           <div className="flex flex-col items-center gap-1">
-            <p className="text-white font-black tracking-[0.3em] text-[10px] uppercase italic opacity-80">EDUSTREAM 2026</p>
+            <p className="text-white font-black tracking-[0.3em] text-[10px] uppercase italic opacity-80">DIDACTILECT 2026</p>
             <div className="h-[1px] w-12 bg-indigo-500/50"></div>
           </div>
         </div>
@@ -84,10 +84,16 @@ export default function Home() {
       <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${scrolled ? "py-4 bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 shadow-2xl shadow-indigo-500/5" : "py-7 bg-transparent"}`}>
         <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
           <div className="flex items-center gap-3 group cursor-pointer">
-            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-indigo-600/40 shadow-lg group-hover:scale-110 transition-transform">
-              <Zap size={22} fill="white" className="text-white" />
-            </div>
-            <span className="text-2xl font-black text-white tracking-tighter uppercase italic">EduStream</span>
+            <div className="flex items-center gap-3">
+              
+  <div className="p-2 md:p-3 rounded-2xl bg-gradient-to-br from-indigo-600/30 to-purple-600/20 backdrop-blur-md border border-white/10 shadow-lg">
+  <img 
+    src="/images/logo.png" 
+    alt="Logo" 
+    className="h-14 md:h-16 w-auto object-contain scale-110 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+  />
+</div>
+</div>
           </div>
           
           <div className="flex items-center gap-4 md:gap-10">
@@ -130,15 +136,22 @@ export default function Home() {
               <Sparkles size={14} className="text-indigo-400" />
               <span className="text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] italic">مستقبلك يبدأ من هنا</span>
             </div>
-            
-            <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-black text-white leading-[0.95] tracking-tighter uppercase italic">
-              اتقن أي مهارة <br /> 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-400 to-blue-400">وابنِ مستقبلك</span>
-            </h1>
+           <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-black text-white leading-[0.95] tracking-tighter italic">
+  مرحبًا بك في رحلتك لإتقان القراءة! 📚
+</h1>
 
-            <p className="text-slate-400 max-w-2xl text-lg md:text-xl leading-relaxed font-bold mx-auto lg:mr-0 opacity-80 italic">
-              وجهتك الأولى لتعلم اللغات، العلوم، والتقنيات الحديثة. دروس تفاعلية ومسارات مدروسة بعناية لتناسب طموحاتك المهنية والأكاديمية.
-            </p>
+<p className="text-slate-400 max-w-2xl text-lg md:text-xl leading-relaxed font-bold mx-auto lg:mr-0 opacity-80 italic">
+القراءة ليست مجرد التعرف على الكلمات…
+بل هي قراءة بسلاسة، بثقة، وبمتعة.
+</p>
+
+<p className="text-slate-400 max-w-2xl text-lg md:text-xl leading-relaxed font-bold mx-auto lg:mr-0 opacity-80 italic mt-4">
+هنا ستتدرّب، تتطوّر، وتصبح قارئًا متمكنًا خطوة بخطوة.
+</p>
+
+<p className="text-slate-300 max-w-2xl text-lg md:text-xl font-black mx-auto lg:mr-0 mt-4">
+👉 انضم إلينا وابدأ رحلتك الآن! ✨
+</p>
 
             <div className="flex flex-wrap items-center gap-5 justify-center lg:justify-start pt-6">
               <Link href="/courses" className="group bg-indigo-600 text-white px-10 py-5 rounded-2xl font-black text-sm hover:bg-indigo-500 transition-all flex items-center gap-3 shadow-2xl shadow-indigo-600/40 active:scale-95">
@@ -154,6 +167,18 @@ export default function Home() {
                 <span className="text-slate-300 font-black text-[11px] uppercase tracking-widest">+3,000 طالب علم</span>
               </div>
             </div>
+            <div className="w-full mt-10 flex justify-center">
+  <div className="w-full max-w-3xl aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+    <iframe
+      className="w-full h-full"
+      src="https://www.youtube.com/embed/-dFK3zIwIFI?autoplay=1&mute=1&rel=0"
+      title="Intro Video"
+      frameBorder="0"
+      allow="autoplay; encrypted-media"
+      allowFullScreen
+    ></iframe>
+  </div>
+</div>
           </div>
 
           {/* Right Section - Feature Cards */}
@@ -246,7 +271,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-12 relative z-10">
           <div className="text-center md:text-right space-y-5">
             <div className="text-3xl font-black text-white italic uppercase tracking-tighter group cursor-pointer">
-              Edu<span className="text-indigo-500">Stream</span>
+              DID<span className="text-indigo-500">ACTILECT</span>
             </div>
             <p className="text-slate-500 text-[11px] leading-relaxed max-w-sm font-black uppercase tracking-widest opacity-60">نحن نؤمن أن العلم هو القوة الحقيقية لتغيير العالم. مهمتنا هي توفير بيئة تعليمية ملهمة للجميع.</p>
           </div>
@@ -258,7 +283,7 @@ export default function Home() {
           </div>
 
           <div className="text-slate-700 text-[10px] font-black tracking-[0.3em] uppercase italic bg-white/5 px-6 py-3 rounded-full border border-white/5 shadow-inner">
-            &copy; 2026 EDUSTREAM . MADE BY <span className="text-indigo-500/80">AYOUB</span>
+            &copy; 2026 DIDACTILECT <span className="text-indigo-500/80"></span>
           </div>
         </div>
       </footer>
@@ -281,3 +306,4 @@ export default function Home() {
     </div>
   );
 }
+

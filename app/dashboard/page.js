@@ -225,7 +225,7 @@ const authUser = session.user;
                <div className="relative z-10">
                  <h3 className="text-white font-black text-2xl mb-3 leading-tight italic uppercase tracking-tighter">التعلم هو القوة ⚡</h3>
                  <p className="text-indigo-100/80 text-xs leading-relaxed font-bold mb-6 italic">
-                   بصفتك مستخدماً لـ EduStream، لديك وصول كامل وغير محدود لكل التقنيات. استمر في إنهاء الدروس لرفع نقاطك وتصدر قائمة المتفوقين.
+                   بصفتك مستخدماً لـ DIDACTILECT، لديك وصول كامل وغير محدود لكل التقنيات. استمر في إنهاء الدروس لرفع نقاطك وتصدر قائمة المتفوقين.
                  </p>
                  <Link href="/my-courses" className="flex items-center justify-center gap-2 w-full bg-white text-indigo-600 py-4 rounded-2xl text-[11px] font-black uppercase shadow-2xl hover:-translate-y-1 transition-all active:scale-95">
                    <LayoutDashboard size={16} /> العودة لمتابعة الدروس
@@ -258,7 +258,7 @@ const authUser = session.user;
         {/* --- Minimal Footer --- */}
         <footer className="mt-24 pt-10 border-t border-white/5 text-center pb-12 opacity-30">
             <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.5em] italic">
-              EduStream Algeria • Intelligence Powered Education • 2026
+              DIDACTILECT Algeria • Intelligence Powered Education • 2026
             </p>
         </footer>
       </div>
@@ -314,3 +314,6 @@ function EmptyState() {
     </div>
   );
 }
+
+
+

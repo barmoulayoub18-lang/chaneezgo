@@ -56,10 +56,13 @@ const nextConfig = {
               font-src 'self' https://fonts.gstatic.com;
               
               frame-src 'self' 
-                https://upload-widget.cloudinary.com 
-                https://res.cloudinary.com 
-                https://translate.google.com
-                https://*.google.com;
+  https://upload-widget.cloudinary.com 
+  https://res.cloudinary.com 
+  https://translate.google.com
+  https://*.google.com
+  https://www.youtube.com
+  https://youtube.com
+  https://www.youtube-nocookie.com;
               
               media-src 'self' blob: https://res.cloudinary.com;
               

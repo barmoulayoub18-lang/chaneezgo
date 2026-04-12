@@ -2,10 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-/**
- * useReadingSession - المحرك المطور لإدارة جلسات القراءة والتحليل.
- * تم تصحيح أخطاء الصياغة البرمجية لضمان الاستقرار التام.
- */
 export function useReadingSession(textData) {
   const [isReading, setIsReading] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -14,113 +10,113 @@ export function useReadingSession(textData) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const timerRef = useRef(null);
-  const transcriptRef = useRef("");
   const hasAnalyzedRef = useRef(false);
   const timeLeftRef = useRef(60);
 
-  const isSpecialExercise = textData?.type === "chrono" || textData?.type === "recorder";
+  const isSpecialExercise =
+    textData?.type === "chrono" || textData?.type === "recorder";
 
-  // 1. مزامنة الوقت المتبقي مع المرجع
+  // =============================
+  // مزامنة الوقت
+  // =============================
   useEffect(() => {
     timeLeftRef.current = timeLeft;
   }, [timeLeft]);
 
-  // 2. إعادة ضبط الجلسة عند تغير النص
+  // =============================
+  // إعادة ضبط
+  // =============================
   useEffect(() => {
     const wordCount = textData?.content?.split(/\s+/)?.length || 0;
     const dynamicTime = Math.max(60, Math.ceil(wordCount * 2));
-    
+
     setIsReading(false);
     setTimeLeft(dynamicTime);
     setTranscript("");
     setResults(null);
     setIsAnalyzing(false);
-    transcriptRef.current = "";
     hasAnalyzedRef.current = false;
-    
-    // تصحيح: دالة التنظيف يجب أن تكون صريحة
+
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
+      if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [textData?.id]);
 
-  // 3. تحليل النتائج
-  const analyzeResults = useCallback(async (finalTranscript, remainingTime) => {
-    if (isAnalyzing || hasAnalyzedRef.current || isSpecialExercise) return;
-    
-    const content = finalTranscript || transcriptRef.current;
-    if (!content.trim()) return;
+  // =============================
+  // تحليل النتائج (🔥 مصحح)
+  // =============================
+  const analyzeResults = useCallback(
+    async (finalTranscript, remainingTime) => {
+      if (isAnalyzing || hasAnalyzedRef.current || isSpecialExercise) return;
 
-    setIsAnalyzing(true);
-    hasAnalyzedRef.current = true;
+      const content = finalTranscript?.trim();
+      if (!content || content.length < 2) {
+        console.warn("⚠️ No transcript detected");
+        return;
+      }
 
-    const wordCountTotal = textData?.content?.split(/\s+/)?.length || 0;
-    const initialTime = Math.max(60, Math.ceil(wordCountTotal * 2));
-    const timeUsed = initialTime - remainingTime;
-    const safeTimeUsed = timeUsed <= 0 ? 1 : timeUsed;
+      console.log("🔥 TRANSCRIPT SENT:", content);
 
-    try {
-      const response = await fetch("/api/analyze-reading", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          originalText: textData?.content || "",
-          userTranscript: content,
-          timeUsed: safeTimeUsed,
-          level: textData?.level || "4ap",
-          textId: textData?.id,
-        }),
-      });
+      setIsAnalyzing(true);
+      hasAnalyzedRef.current = true;
 
-      const data = await response.json();
-      const wordsRead = content.trim().split(/\s+/).filter(Boolean).length;
-      const calculatedWpm = Math.round((wordsRead / safeTimeUsed) * 60);
+      const wordCountTotal =
+        textData?.content?.split(/\s+/)?.length || 0;
+      const initialTime = Math.max(60, Math.ceil(wordCountTotal * 2));
+      const timeUsed = initialTime - remainingTime;
+      const safeTimeUsed = timeUsed <= 0 ? 1 : timeUsed;
 
-      setResults({
-        wpm: data.wpm || calculatedWpm,
-        accuracy: data.accuracy || 0,
-        errorsCount: data.errorsCount || 0,
-        wordsRead: wordsRead,
-        wordsAnalysis: data.wordsAnalysis || [],
-        rating: data.rating || (data.accuracy > 80 ? "Excellant" : "Apprenti"),
-        feedback: data.feedback || "استمر في التدريب، أنت تتطور!",
-        stars: data.stars || (data.accuracy > 70 ? 3 : 1),
-      });
+      try {
+        const response = await fetch("/api/analyze-reading", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            originalText: textData?.content || "",
+            userTranscript: content,
+            timeUsed: safeTimeUsed,
+            level: textData?.level || "4ap",
+          }),
+        });
 
-    } catch (error) {
-      console.error("Analysis Error:", error);
-      const wordsRead = content.trim().split(/\s+/).filter(Boolean).length;
-      setResults({
-        wpm: Math.round((wordsRead / safeTimeUsed) * 60),
-        accuracy: 85,
-        errorsCount: 0,
-        wordsRead: wordsRead,
-        wordsAnalysis: [],
-        rating: "Bien",
-        feedback: "قراءة جيدة! ننتظر منك المزيد في المرة القادمة.",
-        stars: 2,
-      });
-    } finally {
-      setIsAnalyzing(false);
-    }
-  }, [textData, isAnalyzing, isSpecialExercise]);
+        const data = await response.json();
 
-  // 4. التحكم في القراءة
+        const wordsRead = content.split(/\s+/).filter(Boolean).length;
+
+        setResults({
+          wpm: data.wpm || Math.round((wordsRead / safeTimeUsed) * 60),
+          accuracy: data.accuracy || 0,
+          errorsCount: data.errorsCount || 0,
+          wordsRead: wordsRead,
+          wordsAnalysis: data.wordsAnalysis || [],
+          rating: data.rating || "متوسط",
+          feedback: data.feedback || "استمر في التدريب",
+          stars: data.stars || 1,
+        });
+
+      } catch (error) {
+        console.error("❌ Analysis Error:", error);
+      } finally {
+        setIsAnalyzing(false);
+      }
+    },
+    [textData, isAnalyzing, isSpecialExercise]
+  );
+
+  // =============================
+  // بدء القراءة
+  // =============================
   const startReading = useCallback(() => {
     const wordCount = textData?.content?.split(/\s+/)?.length || 0;
     const dynamicTime = Math.max(60, Math.ceil(wordCount * 2));
 
     setResults(null);
     setTranscript("");
-    transcriptRef.current = "";
     setTimeLeft(dynamicTime);
     setIsReading(true);
     hasAnalyzedRef.current = false;
 
     if (timerRef.current) clearInterval(timerRef.current);
-    
+
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -132,24 +128,26 @@ export function useReadingSession(textData) {
     }, 1000);
   }, [textData?.content]);
 
-  // دالة التوقف - تم وضعها هنا ليتمكن startReading من التعرف عليها
-  function stopReading() {
+  // =============================
+  // إيقاف القراءة (🔥 مصحح)
+  // =============================
+  const stopReading = useCallback(() => {
     setIsReading(false);
     if (timerRef.current) clearInterval(timerRef.current);
-    
+
     setTimeout(() => {
-      if (transcriptRef.current.trim().length > 0 && !hasAnalyzedRef.current) {
-        analyzeResults(transcriptRef.current, timeLeftRef.current);
+      if (transcript.trim().length > 0 && !hasAnalyzedRef.current) {
+        analyzeResults(transcript, timeLeftRef.current);
       }
     }, 500);
-  }
+  }, [transcript, analyzeResults]);
 
-  // تحويل stopReading إلى useCallback لضمان ثباتها
-  const stopReadingMemo = useCallback(stopReading, [analyzeResults]);
-
+  // =============================
+  // تحديث النص
+  // =============================
   const updateTranscript = useCallback((newText) => {
+    if (!newText) return;
     setTranscript(newText);
-    transcriptRef.current = newText;
   }, []);
 
   return {
@@ -159,7 +157,10 @@ export function useReadingSession(textData) {
     results,
     isAnalyzing,
     startReading,
-    stopReading: stopReadingMemo,
+    stopReading,
     updateTranscript,
   };
 }
+
+
+

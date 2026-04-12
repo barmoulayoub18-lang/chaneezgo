@@ -30,13 +30,11 @@ export default function AIChatBot({ lessonTitle, lessonDescription }) {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      // تم التعديل هنا لضمان المرور عبر السيرفر وحل مشكلة 401
+      const response = await fetch("/api/analyze-reading", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer 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`,
           "Content-Type": "application/json",
-          "HTTP-Referer": window.location.origin, // مطلوب من OpenRouter أحياناً
-          "X-Title": "EduStream Platform"
         },
         body: JSON.stringify({
           "model": "google/gemini-2.0-flash-001",
@@ -113,7 +111,6 @@ export default function AIChatBot({ lessonTitle, lessonDescription }) {
                 <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${msg.role === 'user' ? 'bg-indigo-500' : 'bg-slate-800 border border-white/5'}`}>
                   {msg.role === 'user' ? <User size={16} className="text-white" /> : <Bot size={16} className="text-indigo-400" />}
                 </div>
-                {/* تم إضافة الكلاس notranslate هنا لحماية نص المحادثة */}
                 <div className={`notranslate max-w-[80%] p-4 rounded-[1.5rem] text-[13px] md:text-sm leading-relaxed shadow-sm ${
                   msg.role === 'user' 
                   ? 'bg-indigo-600 text-white rounded-tl-none' 
@@ -143,7 +140,6 @@ export default function AIChatBot({ lessonTitle, lessonDescription }) {
           {/* Input Area */}
           <div className="p-4 bg-slate-900/50 border-t border-white/5 backdrop-blur-xl">
             <div className="relative group">
-              {/* تم إضافة الكلاس notranslate هنا لحماية النص أثناء الكتابة */}
               <input
                 type="text"
                 value={input}
@@ -190,6 +186,3 @@ export default function AIChatBot({ lessonTitle, lessonDescription }) {
     </div>
   );
 }
-
-
-

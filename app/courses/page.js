@@ -183,7 +183,7 @@ export default function AllCoursesPage() {
              <div className="h-[1px] w-20 bg-slate-500"></div>
           </div>
           <p className="text-[10px] font-black text-slate-800 uppercase tracking-[0.8em] italic leading-loose">
-            EduStream Algeria • Professional Learning Hub • 2026
+            DIDACTILECT Algeria • Professional Learning Hub • 2026
           </p>
         </footer>
       </div>
@@ -195,3 +195,6 @@ export default function AllCoursesPage() {
     </div>
   );
 }
+
+
+

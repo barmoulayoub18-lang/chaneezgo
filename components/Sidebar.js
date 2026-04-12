@@ -9,12 +9,16 @@ export default function Sidebar({ lessons = [], currentLesson, setCurrentLesson 
       {/* Logo Section - متناسق مع الهوية الجديدة */}
       <div className="p-8 border-b border-white/5 bg-white/[0.02]">
         <div className="flex items-center gap-3 group cursor-pointer">
-          <div className="p-2.5 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-600/20 group-hover:scale-110 transition-transform">
-            <Video size={18} className="text-white" />
-          </div>
-          <h1 className="text-lg font-black text-white italic tracking-tighter uppercase">
-            EDU<span className="text-indigo-500">STREAM</span>
-          </h1>
+          <div className="p-2.5 bg-gradient-to-br from-indigo-600/30 to-purple-600/20 backdrop-blur-md border border-white/10 rounded-xl shadow-lg group-hover:scale-110 transition-transform">
+  <img 
+    src="/images/logo.png" 
+    alt="Logo" 
+    className="h-8 w-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+  />
+</div>
+<h1 className="text-lg font-black text-white italic tracking-tighter uppercase">
+  DIDACTI<span className="text-indigo-500">LECT</span>
+</h1>
         </div>
       </div>
 
@@ -142,3 +146,5 @@ export default function Sidebar({ lessons = [], currentLesson, setCurrentLesson 
     </aside>
   );
 }
+
+
