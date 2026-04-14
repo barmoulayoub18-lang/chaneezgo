@@ -16,22 +16,13 @@ export function useReadingSession(textData) {
   const isSpecialExercise =
     textData?.type === "chrono" || textData?.type === "recorder";
 
-  // =============================
-  // مزامنة الوقت
-  // =============================
   useEffect(() => {
     timeLeftRef.current = timeLeft;
   }, [timeLeft]);
 
-  // =============================
-  // إعادة ضبط
-  // =============================
   useEffect(() => {
-    const wordCount = textData?.content?.split(/\s+/)?.length || 0;
-    const dynamicTime = Math.max(60, Math.ceil(wordCount * 2));
-
     setIsReading(false);
-    setTimeLeft(dynamicTime);
+    setTimeLeft(60);
     setTranscript("");
     setResults(null);
     setIsAnalyzing(false);
@@ -42,27 +33,19 @@ export function useReadingSession(textData) {
     };
   }, [textData?.id]);
 
-  // =============================
-  // تحليل النتائج (🔥 مصحح)
-  // =============================
   const analyzeResults = useCallback(
     async (finalTranscript, remainingTime) => {
       if (isAnalyzing || hasAnalyzedRef.current || isSpecialExercise) return;
 
       const content = finalTranscript?.trim();
       if (!content || content.length < 2) {
-        console.warn("⚠️ No transcript detected");
         return;
       }
-
-      console.log("🔥 TRANSCRIPT SENT:", content);
 
       setIsAnalyzing(true);
       hasAnalyzedRef.current = true;
 
-      const wordCountTotal =
-        textData?.content?.split(/\s+/)?.length || 0;
-      const initialTime = Math.max(60, Math.ceil(wordCountTotal * 2));
+      const initialTime = 60;
       const timeUsed = initialTime - remainingTime;
       const safeTimeUsed = timeUsed <= 0 ? 1 : timeUsed;
 
@@ -79,7 +62,6 @@ export function useReadingSession(textData) {
         });
 
         const data = await response.json();
-
         const wordsRead = content.split(/\s+/).filter(Boolean).length;
 
         setResults({
@@ -94,7 +76,7 @@ export function useReadingSession(textData) {
         });
 
       } catch (error) {
-        console.error("❌ Analysis Error:", error);
+        console.error(error);
       } finally {
         setIsAnalyzing(false);
       }
@@ -102,16 +84,10 @@ export function useReadingSession(textData) {
     [textData, isAnalyzing, isSpecialExercise]
   );
 
-  // =============================
-  // بدء القراءة
-  // =============================
   const startReading = useCallback(() => {
-    const wordCount = textData?.content?.split(/\s+/)?.length || 0;
-    const dynamicTime = Math.max(60, Math.ceil(wordCount * 2));
-
     setResults(null);
     setTranscript("");
-    setTimeLeft(dynamicTime);
+    setTimeLeft(60);
     setIsReading(true);
     hasAnalyzedRef.current = false;
 
@@ -128,9 +104,6 @@ export function useReadingSession(textData) {
     }, 1000);
   }, [textData?.content]);
 
-  // =============================
-  // إيقاف القراءة (🔥 مصحح)
-  // =============================
   const stopReading = useCallback(() => {
     setIsReading(false);
     if (timerRef.current) clearInterval(timerRef.current);
@@ -142,9 +115,6 @@ export function useReadingSession(textData) {
     }, 500);
   }, [transcript, analyzeResults]);
 
-  // =============================
-  // تحديث النص
-  // =============================
   const updateTranscript = useCallback((newText) => {
     if (!newText) return;
     setTranscript(newText);
@@ -161,6 +131,4 @@ export function useReadingSession(textData) {
     updateTranscript,
   };
 }
-
-
 

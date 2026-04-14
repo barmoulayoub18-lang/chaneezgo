@@ -270,9 +270,9 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-600/5 rounded-full blur-[100px] -ml-32 -mb-32"></div>
         <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-12 relative z-10">
           <div className="text-center md:text-right space-y-5">
-            <div className="text-3xl font-black text-white italic uppercase tracking-tighter group cursor-pointer">
-              DID<span className="text-indigo-500">ACTILECT</span>
-            </div>
+            <div dir="ltr" className="text-3xl font-black text-white italic uppercase tracking-tighter group cursor-pointer inline-block text-left">
+  DID<span className="text-indigo-500">ACTILECT</span>
+</div>
             <p className="text-slate-500 text-[11px] leading-relaxed max-w-sm font-black uppercase tracking-widest opacity-60">نحن نؤمن أن العلم هو القوة الحقيقية لتغيير العالم. مهمتنا هي توفير بيئة تعليمية ملهمة للجميع.</p>
           </div>
           
@@ -306,4 +306,7 @@ export default function Home() {
     </div>
   );
 }
+
+
+
 

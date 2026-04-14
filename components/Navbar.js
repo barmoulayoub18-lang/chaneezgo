@@ -49,10 +49,10 @@ export default function Navbar() {
   // روابط التنقل: تم إدراج "نظام الطلاقة اللغوية" كعنصر أساسي
   const navLinks = [
     { name: 'الرئيسية', icon: Home, path: '/' },
-    { name: 'تصفح الدورات', icon: LayoutGrid, path: '/courses' }, 
+    { name: 'تدرب على القراءة بطلاقة الان !  ', icon: LayoutGrid, path: '/courses' }, 
     { name: 'لوحة التحكم', icon: LayoutDashboard, path: '/dashboard' },
     
-    { name: 'دوراتي التعليمية', icon: BookOpen, path: '/my-courses' },
+    { name: ' نصوص للتدرب على الطلاقة', icon: BookOpen, path: '/my-courses' },
     { name: 'الدعم الفني', icon: MessageSquare, path: '/support' },
     { name: 'الملف الشخصي', icon: User, path: '/profile' },
   ];

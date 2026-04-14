@@ -117,7 +117,7 @@ export default function MyCoursesPage() {
         )}
 
         <footer className="mt-32 text-center pb-10 border-t border-white/5 pt-10">
-            <p className="text-[10px] font-black text-slate-700 uppercase tracking-[0.5em]">EduStream Intelligence • 2026</p>
+            <p className="text-[10px] font-black text-slate-700 uppercase tracking-[0.5em]">DIDACTILECT Intelligence • 2026</p>
         </footer>
       </div>
     </div>
